@@ -1,6 +1,3 @@
-# created May 2015 by Cherie M Huang
-# modified July 2015 by Damon Crockett
-
 import pandas as pd
 import numpy as np
 import sys
