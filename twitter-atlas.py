@@ -44,7 +44,7 @@ for w in df.index:
         secpast.append(int((dtime-zero).total_seconds()))
     else:
         secpast.append(int((dtime-zero).total_seconds()) + (secperday * isoweekday))
-    print(i,"secpast",w,"of",len(df))
+    print("secpast",w,"of",len(df))
 
 df['secpast'] = secpast    
 df['year'] = [item.year for item in df.postedTime]
@@ -65,7 +65,7 @@ px_w = (thumb_side) * num_bins
 px_h = (thumb_side) * bin_max
 print(str(px_w)+'w',str(px_h)+'h')
 
-answer = raw_input("okay?")
+answer = input("okay?")
 if answer == "no":
     exit()
 
