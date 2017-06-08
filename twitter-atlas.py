@@ -18,17 +18,12 @@ sort_var = sys.argv[4]
 num_bins = int(sys.argv[5])
 thumb_side = int(sys.argv[6])
 
-print "Reading data..."
 
 # read in data file as pandas DataFrame object (df)
 df = pd.read_csv(infile)
 
 # option to sample the dataframe
 #df = df.sample(n=1048576)
-
-print "...done."
-
-
 
 """Getting 'secpast' feature"""
 
@@ -68,7 +63,7 @@ px_w = (thumb_side) * num_bins
 # opportunity to game the y-var for oversized histograms
 #px_h = px_w
 px_h = (thumb_side) * bin_max
-print str(px_w)+'w',str(px_h)+'h'
+print(str(px_w)+'w',str(px_h)+'h')
 
 answer = raw_input("okay?")
 if answer == "no":
@@ -79,8 +74,6 @@ canvas = Image.new('RGB',(px_w,px_h),(50,50,50))
 
 # set thumbnail size tuple using thumb_side
 thumb_px = (thumb_side,thumb_side)
-
-print "Building image..."
 
 # make a list of unique bins
 bins = list(set(list(df.x_bin)))
@@ -105,16 +98,15 @@ for item in bins:
     n = len(tmp.index)
     for i in range(n):
         try:
-            print x_coord,y_coord
+            print(x_coord,y_coord)
             thumb = Image.open(tmp.filename.loc[i])
             thumb.thumbnail(thumb_px,Image.ANTIALIAS)
             canvas.paste(thumb,(x_coord,y_coord))
             y_coord = y_coord - thumb_side
         except:
-			print 'missing'
-print "...done."
+	    pass
 
-print "Saving image..."
+print("Saving image...")
 
 # save written canvas to outfile
 canvas.save(outfile)
@@ -123,4 +115,3 @@ canvas.save(outfile)
 #top = px_h-px_w
 #canvas.crop((0,top,px_w,px_h)).save(outfile.rstrip(".png")+"_cropped.png")
 
-print "...done."
