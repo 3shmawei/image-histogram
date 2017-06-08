@@ -97,14 +97,11 @@ for item in bins:
     # loop over rows in tmp
     n = len(tmp.index)
     for i in range(n):
-        try:
-            print(x_coord,y_coord)
-            thumb = Image.open(tmp.filename.loc[i])
-            thumb.thumbnail(thumb_px,Image.ANTIALIAS)
-            canvas.paste(thumb,(x_coord,y_coord))
-            y_coord = y_coord - thumb_side
-        except:
-            pass
+        print(x_coord,y_coord)
+        thumb = Image.open(tmp.local_path.loc[i])
+        thumb.thumbnail(thumb_px,Image.ANTIALIAS)
+        canvas.paste(thumb,(x_coord,y_coord))
+        y_coord = y_coord - thumb_side
 
 print("saving image...")
 
