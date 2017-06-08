@@ -104,9 +104,9 @@ for item in bins:
             canvas.paste(thumb,(x_coord,y_coord))
             y_coord = y_coord - thumb_side
         except:
-	    pass
+        pass
 
-print("Saving image...")
+print("saving image...")
 
 # save written canvas to outfile
 canvas.save(outfile)
