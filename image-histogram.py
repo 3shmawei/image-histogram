@@ -9,7 +9,7 @@ your data as follows:
 
 0. Put all your images into one folder
 1. In your data file, make a column of file paths that point to the images in this folder,
-   call it 'filename'
+   call it 'local_path'
 2. Choose your x variable
 3. Choose a number of bins for your x-variable
 4. Choose a sorting variable for the y-axis (not really a histogram thing, but adds
@@ -52,8 +52,8 @@ bin_max = df.groupby('x_bin').size().max()
 px_w = (thumb_side) * num_bins
 
 # opportunity to game the y-var for oversized histograms
-#px_h = px_w
-px_h = (thumb_side) * bin_max
+px_h = px_w
+#px_h = (thumb_side) * bin_max
 print str(px_w)+'w',str(px_h)+'h'
 
 answer = raw_input("okay?")
@@ -92,7 +92,7 @@ for item in bins:
     for i in range(n):
         try:
             print x_coord,y_coord
-            thumb = Image.open(tmp.filename.loc[i])
+            thumb = Image.open(tmp.local_path.loc[i])
             thumb.thumbnail(thumb_px,Image.ANTIALIAS)
             canvas.paste(thumb,(x_coord,y_coord))
             y_coord = y_coord - thumb_side

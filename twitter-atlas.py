@@ -2,28 +2,14 @@ import pandas as pd
 import numpy as np
 import sys
 from PIL import Image, ImageDraw
-
-"""
-This code uses the Python Image Library to build a histogram of images. You should prepare
-your data as follows:
-
-0. Put all your images into one folder
-1. In your data file, make a column of file paths that point to the images in this folder,
-   call it 'filename'
-2. Choose your x variable
-3. Choose a number of bins for your x-variable
-4. Choose a sorting variable for the y-axis (not really a histogram thing, but adds
-   another sorted dimension)
-5. Choose a thumbnail size
-
-In terminal window, type:
-
-$ python learning.py <data file> <outfile> <x var> <sorting var> <bins> <thumb size>
-
-Here's an example:
-
-$ python learning.py ./data.csv ./img.png lon hue 20 100
-"""
+from dateutil import parser
+import datetime
+import pytz
+import os
+import glob
+from skimage.io import imread
+from skimage import color
+import time as time_module
 
 infile = sys.argv[1]
 outfile = sys.argv[2]
@@ -41,6 +27,34 @@ df = pd.read_csv(infile)
 #df = df.sample(n=1048576)
 
 print "...done."
+
+
+
+"""Getting 'secpast' feature"""
+
+df.postedTime = df.postedTime.apply(parser.parse)
+df['isoweekday'] = [item.isoweekday() for item in df.postedTime]
+df['time'] = [item.time() for item in df.postedTime]
+zero = datetime.datetime.combine(datetime.date.today(),datetime.time(0,0,0,0))
+secperday = 86400
+
+secpast = []
+for w in df.index:
+
+    isoweekday = df.isoweekday.loc[w]
+    time = df.time.loc[w]
+    dtime = datetime.datetime.combine(datetime.date.today(),time)
+
+    if isoweekday==7:
+        secpast.append(int((dtime-zero).total_seconds()))
+    else:
+        secpast.append(int((dtime-zero).total_seconds()) + (secperday * isoweekday))
+    print(i,"secpast",w,"of",len(df))
+
+df['secpast'] = secpast    
+df['year'] = [item.year for item in df.postedTime]
+
+
 
 # create 'x_bin' column in df using pandas.cut()
 df['x_bin'] = pd.cut(df[x_var],num_bins,labels=False)
